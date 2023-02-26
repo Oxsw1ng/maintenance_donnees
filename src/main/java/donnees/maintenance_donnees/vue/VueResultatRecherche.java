@@ -1,27 +1,85 @@
 package donnees.maintenance_donnees.vue;
 
+import donnees.maintenance_donnees.Requetes;
 import donnees.maintenance_donnees.controleur.controllerValiderPressed;
-import donnees.maintenance_donnees.interfaces.Observateur;
-import donnees.maintenance_donnees.interfaces.Sujet;
 import donnees.maintenance_donnees.modele.Modele;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
-public class VueResultatRecherche extends BorderPane implements Observateur {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class VueResultatRecherche extends BorderPane {
 
     private Modele modele;
 
     public VueResultatRecherche(Modele modele) {
         this.modele = modele;
-        Label pays = new Label();
+
+        /// Booléens des cases cochées
+        boolean boolH = modele.getInformationsCourantes(0);
+        boolean boolP = modele.getInformationsCourantes(1);
+        boolean boolMA = modele.getInformationsCourantes(2);
+        boolean boolMAV = modele.getInformationsCourantes(3);
+        // Booléen supplémentaire si toutes les cases sont cochées
+        boolean boolAll = !boolH && !boolP && !boolMA && !boolMAV;
+
+        Label pays = new Label("Pays choisi : "+modele.getPays());
+        pays.setFont(new Font(40));
+
+        VBox informations = new VBox();
+        informations.setPadding(new Insets(20,0,20,0));
+        informations.setMaxWidth(400);
+        informations.setAlignment(Pos.CENTER);
+        informations.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(10), null)));
+        informations.setBorder(new Border(new javafx.scene.layout.BorderStroke(javafx.scene.paint.Color.BLACK,
+                BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
+
+        /// Résultat de la requête suite aux cases cochées
+        String[] resultatRequete = Requetes.selectFromCountry(modele.getPays(), boolH, boolP,boolMA, boolMAV);
+
+        // Affichage des informations désirées
+        // Habitants
+        if (boolH || boolAll) {
+            Label habitants = new Label("Habitants : "+resultatRequete[0]);
+            habitants.setPadding(new Insets(20,0,20,0));
+            habitants.setFont(new Font(15));
+            informations.getChildren().add(habitants);
+        }
+        // PIB
+        if (boolP || boolAll) {
+            Label PIB = new Label("PIB : "+resultatRequete[1]);
+            PIB.setPadding(new Insets(20,0,20,0));
+            PIB.setFont(new Font(15));
+            informations.getChildren().add(PIB);
+        }
+        // moyenneAge
+        if (boolMA || boolAll) {
+            Label moyenneAge = new Label("Moyenne d'âge : "+resultatRequete[2]);
+            moyenneAge.setPadding(new Insets(20,0,20,0));
+            moyenneAge.setFont(new Font(15));
+            informations.getChildren().add(moyenneAge);
+        }
+        // Habitants
+        if (boolMAV || boolAll) {
+            Label moyenneAgeVie = new Label("Moyenne d'espérance de vie : "+resultatRequete[3]);
+            moyenneAgeVie.setPadding(new Insets(20,0,20,0));
+            moyenneAgeVie.setFont(new Font(15));
+            informations.getChildren().add(moyenneAgeVie);
+        }
         Button retourMenu = new Button("Revenir au menu du choix");
         retourMenu.setOnAction(new controllerValiderPressed(modele));
-        this.setCenter(retourMenu);
+
+        VBox main_vb = new VBox(pays, informations, retourMenu);
+        main_vb.setSpacing(50);
+        main_vb.setAlignment(Pos.CENTER);
+
+        this.setCenter(main_vb);
     }
 
-    @Override
-    public void actualiser(Sujet s) {
-
-    }
 }

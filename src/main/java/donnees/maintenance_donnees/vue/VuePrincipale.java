@@ -1,8 +1,7 @@
 package donnees.maintenance_donnees.vue;
 
+import donnees.maintenance_donnees.Requetes;
 import donnees.maintenance_donnees.controleur.controllerValiderPressed;
-import donnees.maintenance_donnees.interfaces.Observateur;
-import donnees.maintenance_donnees.interfaces.Sujet;
 import donnees.maintenance_donnees.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,15 +14,21 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class VuePrincipale extends BorderPane implements Observateur {
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class VuePrincipale extends BorderPane {
 
     private Modele modele;
 
     public VuePrincipale(Modele modele) {
         this.modele = modele;
         ChoiceBox<String> pays = new ChoiceBox<String>();
-        pays.getItems().add("France");
-        pays.getItems().add("Canada");
+        ArrayList<String> listePays = Requetes.selectCountries();
+        Iterator<String> it = listePays.iterator();
+        while (it.hasNext()) {
+            pays.getItems().add(it.next());
+        }
         pays.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -32,15 +37,42 @@ public class VuePrincipale extends BorderPane implements Observateur {
             }
         });
         CheckBox habitants = new CheckBox("Habitants");
-        habitants.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-            }
-        });
         CheckBox PIB = new CheckBox("PIB");
         CheckBox moyenneAge = new CheckBox("Moyenne d'âge");
         CheckBox moyenneAgeVie = new CheckBox("Moyenne de temps de vie");
+
+        /// Remise des informations dans le modèle à false
+        modele.setInformationsCourantes(false, 0);
+        modele.setInformationsCourantes(false, 1);
+        modele.setInformationsCourantes(false, 2);
+        modele.setInformationsCourantes(false, 3);
+
+        /// Controleurs sur les Checkbox des informations à afficher
+        habitants.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modele.setInformationsCourantes(habitants.isSelected(), 0);
+            }
+        });
+        PIB.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modele.setInformationsCourantes(PIB.isSelected(), 1);
+            }
+        });
+        moyenneAgeVie.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modele.setInformationsCourantes(moyenneAgeVie.isSelected(), 2);
+            }
+        });
+        moyenneAge.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modele.setInformationsCourantes(moyenneAge.isSelected(), 3);
+            }
+        });
+
         HBox hb = new HBox(pays,habitants,PIB,moyenneAge,moyenneAgeVie);
         hb.setSpacing(5);
         hb.setAlignment(Pos.CENTER);
@@ -55,8 +87,4 @@ public class VuePrincipale extends BorderPane implements Observateur {
         vb.setSpacing(20);
     }
 
-    @Override
-    public void actualiser(Sujet s) {
-
-    }
 }

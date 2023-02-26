@@ -32,6 +32,7 @@ public class controllerValiderPressed implements EventHandler<ActionEvent> {
                 modele.setCurrentScene("result");
             }
         } else {
+            modele.setPays(null);
             modele.setCurrentScene("choice");
         }
     }

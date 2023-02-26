@@ -18,9 +18,8 @@ public class Main extends Application {
         Modele modele = new Modele();
 
         VuePrincipale vp = new VuePrincipale(modele);
-        modele.enregistrerObservateur(vp);
 
-        Scene scene = new Scene(vp,500,500);
+        Scene scene = new Scene(vp,800,600);
 
         stage.setTitle("Countr'Info");
         stage.setScene(scene);

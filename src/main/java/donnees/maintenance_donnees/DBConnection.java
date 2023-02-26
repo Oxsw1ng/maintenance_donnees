@@ -18,7 +18,6 @@ public class DBConnection {
         String serverName = "localhost";
         //Attention, sous MAMP, le port est 8889
         String portNumber = "3306";
-        String tableName = "personne";
 
         // creation de la connection
         Properties connectionProps = new Properties();
