@@ -1,0 +1,14 @@
+ALTER TABLE infos_pays ADD superficie INT;
+
+UPDATE infos_pays SET superficie = 643801 WHERE pays = 'France';
+UPDATE infos_pays SET superficie = 357386 WHERE pays = 'Allemagne';
+UPDATE infos_pays SET superficie = 505990 WHERE pays = 'Espagne';
+UPDATE infos_pays SET superficie = 301340 WHERE pays = 'Italie';
+UPDATE infos_pays SET superficie = 243610 WHERE pays = 'Royaume-Uni';
+UPDATE infos_pays SET superficie = 9833520 WHERE pays = 'États-Unis';
+UPDATE infos_pays SET superficie = 9596960 WHERE pays = 'Chine';
+UPDATE infos_pays SET superficie = 3287263 WHERE pays = 'Inde';
+UPDATE infos_pays SET superficie = 377930 WHERE pays = 'Japon';
+UPDATE infos_pays SET superficie = 17098246 WHERE pays = 'Russie';
+UPDATE infos_pays SET superficie = 9984670 WHERE pays = 'Canada';
+

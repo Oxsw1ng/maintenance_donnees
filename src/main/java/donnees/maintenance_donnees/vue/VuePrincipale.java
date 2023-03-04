@@ -1,6 +1,7 @@
 package donnees.maintenance_donnees.vue;
 
 import donnees.maintenance_donnees.Requetes;
+import donnees.maintenance_donnees.XMLParsing;
 import donnees.maintenance_donnees.controleur.controllerValiderPressed;
 import donnees.maintenance_donnees.modele.Modele;
 import javafx.event.ActionEvent;
@@ -24,7 +25,7 @@ public class VuePrincipale extends BorderPane {
     public VuePrincipale(Modele modele) {
         this.modele = modele;
         ChoiceBox<String> pays = new ChoiceBox<String>();
-        ArrayList<String> listePays = Requetes.selectCountries();
+        ArrayList<String> listePays = XMLParsing.selectCountries();
         Iterator<String> it = listePays.iterator();
         while (it.hasNext()) {
             pays.getItems().add(it.next());
@@ -33,19 +34,20 @@ public class VuePrincipale extends BorderPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 modele.setPays(pays.getValue());
-                System.out.println(modele.getPays());
             }
         });
         CheckBox habitants = new CheckBox("Habitants");
         CheckBox PIB = new CheckBox("PIB");
         CheckBox moyenneAge = new CheckBox("Moyenne d'âge");
         CheckBox moyenneAgeVie = new CheckBox("Moyenne de temps de vie");
+        CheckBox superficie = new CheckBox("Superficie");
 
         /// Remise des informations dans le modèle à false
         modele.setInformationsCourantes(false, 0);
         modele.setInformationsCourantes(false, 1);
         modele.setInformationsCourantes(false, 2);
         modele.setInformationsCourantes(false, 3);
+        modele.setInformationsCourantes(false, 4);
 
         /// Controleurs sur les Checkbox des informations à afficher
         habitants.setOnAction(new EventHandler<ActionEvent>() {
@@ -63,17 +65,24 @@ public class VuePrincipale extends BorderPane {
         moyenneAgeVie.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                modele.setInformationsCourantes(moyenneAgeVie.isSelected(), 2);
+                modele.setInformationsCourantes(moyenneAgeVie.isSelected(), 3);
             }
         });
         moyenneAge.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                modele.setInformationsCourantes(moyenneAge.isSelected(), 3);
+                modele.setInformationsCourantes(moyenneAge.isSelected(), 2);
             }
         });
 
-        HBox hb = new HBox(pays,habitants,PIB,moyenneAge,moyenneAgeVie);
+        superficie.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modele.setInformationsCourantes(superficie.isSelected(), 4);
+            }
+        });
+
+        HBox hb = new HBox(pays,habitants,PIB,moyenneAge,moyenneAgeVie,superficie);
         hb.setSpacing(5);
         hb.setAlignment(Pos.CENTER);
         // Controleur sur la HBox pour changer les valeurs dans le modèle

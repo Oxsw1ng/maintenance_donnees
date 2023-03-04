@@ -1,0 +1,23 @@
+<infos_pays>
+    <?php
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+
+            $usager = 'root';
+            $motdepasse = '';
+            $hote = 'localhost';
+            $base = 'maintenance_donnees';
+
+            $dsn = "mysql:host=$hote;dbname=$base;";
+            $basededonnees = new PDO($dsn, $usager, $motdepasse);
+
+            $requete = $basededonnees->prepare("SELECT * FROM infos_pays");
+            $requete->execute();
+            $listepays = $requete->fetchAll(PDO::FETCH_OBJ);
+
+            foreach($listepays as $pays) {
+                print_r($pays);
+            }
+
+            ?>
+</infos_pays>

@@ -17,8 +17,10 @@ public class Requetes {
         connection = DBConnection.getConnection();
         String[] retour = new String[5];
 
+        boolean allTrue = !habitants && !PIB && !moyenneAge && !moyenneAgeVie;
+
         // Préparation de la requête
-        String requete = "SELECT ";
+        String requete = "SELECT";
         if (habitants) requete += " habitants,";
         if (PIB) requete += " PIB,";
         if (moyenneAge) requete += " moyenneAge,";
@@ -29,17 +31,21 @@ public class Requetes {
 
         // Retire la virgule de fin
         requete = requete.substring(0, requete.length()-1);
-        requete += "FROM infos_pays WHERE pays = '"+pays+"'";
+        requete += " FROM infos_pays WHERE pays = '"+pays+"'";
 
         try {
             PreparedStatement statement = connection.prepareStatement(requete);
             statement.execute();
             ResultSet rs = statement.getResultSet();
             while (rs.next()) {
-                retour[0] = rs.getString("habitants");
-                retour[1] = rs.getString("PIB");
-                retour[2] = rs.getString("moyenneAge");
-                retour[3] = rs.getString("moyenneAgeVie");
+                if (habitants || allTrue)
+                    retour[0] = rs.getString("habitants");
+                if (PIB || allTrue)
+                    retour[1] = rs.getString("PIB");
+                if (moyenneAge || allTrue)
+                    retour[2] = rs.getString("moyenneAge");
+                if (moyenneAgeVie || allTrue)
+                    retour[3] = rs.getString("moyenneAgeVie");
             }
         } catch (SQLException e) {
             System.out.println("Erreur dans la requête du choix des informations du pays");

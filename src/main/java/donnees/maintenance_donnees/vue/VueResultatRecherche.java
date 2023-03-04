@@ -1,6 +1,7 @@
 package donnees.maintenance_donnees.vue;
 
 import donnees.maintenance_donnees.Requetes;
+import donnees.maintenance_donnees.XMLParsing;
 import donnees.maintenance_donnees.controleur.controllerValiderPressed;
 import donnees.maintenance_donnees.modele.Modele;
 import javafx.geometry.Insets;
@@ -26,8 +27,9 @@ public class VueResultatRecherche extends BorderPane {
         boolean boolP = modele.getInformationsCourantes(1);
         boolean boolMA = modele.getInformationsCourantes(2);
         boolean boolMAV = modele.getInformationsCourantes(3);
+        boolean boolS = modele.getInformationsCourantes(4);
         // Booléen supplémentaire si toutes les cases sont cochées
-        boolean boolAll = !boolH && !boolP && !boolMA && !boolMAV;
+        boolean boolAll = !boolH && !boolP && !boolMA && !boolMAV && !boolS;
 
         Label pays = new Label("Pays choisi : "+modele.getPays());
         pays.setFont(new Font(40));
@@ -41,36 +43,43 @@ public class VueResultatRecherche extends BorderPane {
                 BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
 
         /// Résultat de la requête suite aux cases cochées
-        String[] resultatRequete = Requetes.selectFromCountry(modele.getPays(), boolH, boolP,boolMA, boolMAV);
+        String[] resultatRequete = XMLParsing.selectFromCountry(modele.getPays(), boolH, boolP,boolMA, boolMAV, boolS);
 
         // Affichage des informations désirées
         // Habitants
         if (boolH || boolAll) {
-            Label habitants = new Label("Habitants : "+resultatRequete[0]);
+            Label habitants = new Label("Nombre d'habitants : "+resultatRequete[0]);
             habitants.setPadding(new Insets(20,0,20,0));
             habitants.setFont(new Font(15));
             informations.getChildren().add(habitants);
         }
         // PIB
         if (boolP || boolAll) {
-            Label PIB = new Label("PIB : "+resultatRequete[1]);
+            Label PIB = new Label("PIB (€) : "+resultatRequete[1]);
             PIB.setPadding(new Insets(20,0,20,0));
             PIB.setFont(new Font(15));
             informations.getChildren().add(PIB);
         }
         // moyenneAge
         if (boolMA || boolAll) {
-            Label moyenneAge = new Label("Moyenne d'âge : "+resultatRequete[2]);
+            Label moyenneAge = new Label("Moyenne d'âge (en années) : "+resultatRequete[2]);
             moyenneAge.setPadding(new Insets(20,0,20,0));
             moyenneAge.setFont(new Font(15));
             informations.getChildren().add(moyenneAge);
         }
         // Habitants
         if (boolMAV || boolAll) {
-            Label moyenneAgeVie = new Label("Moyenne d'espérance de vie : "+resultatRequete[3]);
+            Label moyenneAgeVie = new Label("Moyenne d'espérance de vie (en années) : "+resultatRequete[3]);
             moyenneAgeVie.setPadding(new Insets(20,0,20,0));
             moyenneAgeVie.setFont(new Font(15));
             informations.getChildren().add(moyenneAgeVie);
+        }
+
+        if (boolS || boolAll) {
+            Label superficie = new Label("Superficie ( en km² ) : "+resultatRequete[4]);
+            superficie.setPadding(new Insets(20,0,20,0));
+            superficie.setFont(new Font(15));
+            informations.getChildren().add(superficie);
         }
         Button retourMenu = new Button("Revenir au menu du choix");
         retourMenu.setOnAction(new controllerValiderPressed(modele));
