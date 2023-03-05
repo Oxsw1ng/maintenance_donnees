@@ -31,6 +31,9 @@ public class controllerValiderPressed implements EventHandler<ActionEvent> {
             } else {
                 modele.setCurrentScene("result");
             }
+        } else if (btn.getText() == "Ajouter un nouveau pays") {
+            modele.setPays(null);
+            modele.setCurrentScene("add");
         } else {
             modele.setPays(null);
             modele.setCurrentScene("choice");

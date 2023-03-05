@@ -88,9 +88,13 @@ public class VuePrincipale extends BorderPane {
         // Controleur sur la HBox pour changer les valeurs dans le modèle
         Button valider = new Button("Voir les informations");
         valider.setOnAction(new controllerValiderPressed(modele));
+        Button add = new Button("Ajouter un nouveau pays");
+        add.setOnAction(new controllerValiderPressed(modele));
+        HBox buttons = new HBox(add, valider);
+        buttons.setAlignment(Pos.CENTER);
         Label info = new Label("* Si aucune case n'est cochée, toutes les informations sur un pays vont seront affichées");
         info.setFont(new Font(9));
-        VBox vb = new VBox(hb,valider,info);
+        VBox vb = new VBox(hb,buttons,info);
         vb.setAlignment(Pos.CENTER);
         this.setCenter(vb);
         vb.setSpacing(20);

@@ -1,5 +1,6 @@
 package donnees.maintenance_donnees.modele;
 
+import donnees.maintenance_donnees.vue.VueAjouter;
 import donnees.maintenance_donnees.vue.VuePrincipale;
 import donnees.maintenance_donnees.vue.VueResultatRecherche;
 import javafx.scene.Scene;
@@ -54,6 +55,11 @@ public class Modele {
             case "result":
                 VueResultatRecherche vrr = new VueResultatRecherche(this);
                 scene = new Scene(vrr,800,600);
+                currentStage.setScene(scene);
+                break;
+            case "add":
+                VueAjouter va = new VueAjouter(this);
+                scene = new Scene(va, 800, 600);
                 currentStage.setScene(scene);
                 break;
             default:
