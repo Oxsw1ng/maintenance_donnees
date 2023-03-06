@@ -123,12 +123,9 @@ public class VueAjouter extends BorderPane {
                     }
                     in.close();
 
-                    // Afficher la réponse
-                    System.out.println(response.toString());
                 } catch (IOException exception) {
-                    System.out.println("erreur");
+                    System.out.println("erreur dans la réponse du serveur");
                 }
-
 
                 modele.setPays(null);
                 modele.setCurrentScene("choice");

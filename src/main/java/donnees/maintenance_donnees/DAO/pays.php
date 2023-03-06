@@ -5,12 +5,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <infos_pays>
     <?php
 
-    require_once "Connexion.php";
-    use donnees\maintenance_donnees\Connexion;
-
-    $requete = Connexion::getBDD()->prepare("SELECT * FROM infos_pays");
-    $requete->execute();
-    $listepays = $requete->fetchAll(PDO::FETCH_OBJ);
+    require_once "PaysDAO.php";
+    $listepays = \donnees\maintenance_donnees\DAO\PaysDAO::listerPays()->fetchAll(PDO::FETCH_OBJ);
 
 
     header("Access-Control-Allow-Origin: *");
